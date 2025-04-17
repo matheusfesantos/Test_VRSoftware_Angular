@@ -1,0 +1,38 @@
+<!-- price-dialog.component.html -->
+<h2 mat-dialog-title>
+    {{ isEditMode ? 'Editar Preço' : 'Adicionar Preço' }}
+  </h2>
+  
+  <mat-dialog-content>
+    <form [formGroup]="priceForm">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Loja*</mat-label>
+        <mat-select formControlName="storeId" [disabled]="isEditMode">
+          <mat-option *ngFor="let store of stores" [value]="store.id">
+            {{ store.id }} - {{ store.description }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="priceForm.get('storeId')?.hasError('required')">
+          Loja é obrigatória
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Preço de Venda (R$)*</mat-label>
+        <input matInput type="number" step="0.001" formControlName="price">
+        <mat-error *ngIf="priceForm.get('price')?.hasError('required')">
+          Preço é obrigatório
+        </mat-error>
+        <mat-error *ngIf="priceForm.get('price')?.hasError('pattern')">
+          Formato inválido (ex: 123.456)
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="save()">
+      <mat-icon>save</mat-icon> Salvar
+    </button>
+  </mat-dialog-actions>
